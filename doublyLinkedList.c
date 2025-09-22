@@ -50,6 +50,32 @@ struct Node *insertion(struct Node *head, int value, int targetValue)
     return head;
 }
 
+struct node* deletion(struct Node* head,int targetValue){
+    if(head==NULL){
+        printf("empty List");
+        return NULL;
+    }
+    struct Node* temp = head;
+    if(head->data==targetValue){
+        head->next->prev=NULL;
+        temp=head->next;
+        free(head);
+        return temp;
+    }
+    
+    while(temp->data!=targetValue){
+        temp=temp->next;
+    }
+    if(temp->next==NULL){
+        temp->prev->next=NULL;
+        free(temp);
+        return head;
+    }
+    temp->prev->next=temp->next;
+    temp->next->prev=temp->prev;
+    free(temp);
+    return head;
+}
 void traverse(struct Node *head)
 {
     struct Node *temp = head;
@@ -59,6 +85,7 @@ void traverse(struct Node *head)
         temp = temp->next;
     }
 }
+
 
 int main()
 {
@@ -80,6 +107,9 @@ int main()
     four->data = 4;
     four->next = NULL;
     traverse(head);
+    printf("after insertion\n");
     traverse(insertion(head, 5, 3));
+    printf("after deletion\n");
+    traverse(deletion(head,5));
     return 0;
 }
